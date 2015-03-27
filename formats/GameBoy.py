@@ -46,6 +46,7 @@ class GameBoy(yapsy.IPlugin.IPlugin):
         ROM_1_1mbyte = 0x52
         ROM_1_2mbyte = 0x53
         ROM_1_5mbyte = 0x54
+        ROM_13 = 13 # unknown what this represents, at the moment
 
     class RamSize(Enum):
         RAM_None    = 0
