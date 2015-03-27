@@ -46,17 +46,25 @@ class GameBoy(yapsy.IPlugin.IPlugin):
         ROM_1_1mbyte = 0x52
         ROM_1_2mbyte = 0x53
         ROM_1_5mbyte = 0x54
-        ROM_13 = 13 # unknown what this represents, at the moment
+        ROM_13       = 13  # 4 in 1 (Europe) (Sachen)
+        ROM_255      = 255 # Pro Action Replay (Europe)
 
     class RamSize(Enum):
         RAM_None    = 0
         RAM_2kbyte  = 1
         RAM_8kbyte  = 2
         RAM_32kbyte = 3
+        RAM_4       = 4   # Game Boy Camera
+        RAM_56      = 56  # Beast Fighter (Taiwan) (Sachen)
+        RAM_255     = 255 # Pro Action Replay (Europe)
 
     class DestinationCode(Enum):
         JAPAN     = 0
         NOT_JAPAN = 1
+        # some unlicensed games use different codes
+        DEST_53   = 53  # Beast Fighter (Taiwan) (Sachen)
+        DEST_137  = 137 # 4 in 1 (Europe) (Sachen)
+        DEST_255  = 255 # Pro Action Replay (Europe)
 
     gb_header_reader = FileReader(
         format = [
@@ -75,13 +83,17 @@ class GameBoy(yapsy.IPlugin.IPlugin):
             ("global_checksum", "H"),
         ],
         massage_in = {
-            "title" : (lambda s: s.decode('ascii').rstrip('\x00')),
+            # I'm using cp437 rather than ascii here because one game,
+            # Gluecksrad, actually uses that encoding, and it neatly handles
+            # the few GB games with a 0x80 at offset 0x143. It conveniently also
+            # works on Sachen's 4-in-1 games, which have a nonstandard format.
+            "title" : (lambda s: s.decode('cp437').rstrip('\x00')),
             "rom_size" : (lambda b: GameBoy.RomSize(b)),
             "ram_size" : (lambda b: GameBoy.RamSize(b)),
             "destination_code" : (lambda b: GameBoy.DestinationCode(b)),
         },
         massage_out = {
-            "title" : (lambda s: s[:16].upper().ljust(16, '\x00').encode('ascii')),
+            "title" : (lambda s: s[:16].upper().ljust(16, '\x00').encode('cp437')),
             "rom_size" : (lambda b: b.value),
             "ram_size" : (lambda b: b.value),
             "destination_code" : (lambda b: b.value),
@@ -89,10 +101,27 @@ class GameBoy(yapsy.IPlugin.IPlugin):
         byte_order = "<"
     )
 
+    HEADER_SIZE = gb_header_reader.struct.size
+
+    @staticmethod
+    def calculate_header_checksum(header):
+        data = GameBoy.generate_header(header)
+        checksum = (0 - sum([data[i] for i in range(0x34, 0x4d)]) - 25) & 255
+        return checksum
+
+    @staticmethod
+    def parse_header(data):
+        if len(data) != GameBoy.HEADER_SIZE:
+            raise ValueError("Wrong header size!")
+        return GameBoy.gb_header_reader.unpack(data)
+
+    @staticmethod
+    def generate_header(header):
+        return GameBoy.gb_header_reader.pack(header)
+
     @staticmethod
     def read_header(path):
         """Read a Game Boy ROM header."""
-        header_size = GameBoy.gb_header_reader.struct.size
         with open(path, "rb") as rom:
             rom.seek(0x100)
-            return GameBoy.gb_header_reader.unpack(rom.read(header_size))
+            return GameBoy.parse_header(rom.read(GameBoy.HEADER_SIZE))
