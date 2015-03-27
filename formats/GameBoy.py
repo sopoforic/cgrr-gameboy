@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with CGRR.  If not, see <http://www.gnu.org/licenses/>.
-"""Parses GameBoy ROM headers."""
+"""Parses Game Boy ROM headers."""
 import os
 from collections import namedtuple
 from enum import Enum
@@ -27,12 +27,12 @@ from errors import UnsupportedSoftwareException
 from utilities import File, FileReader
 
 class GameBoy(yapsy.IPlugin.IPlugin):
-    """Parses GameBoy ROM headers."""
+    """Parses Game Boy ROM headers."""
 
     key = "game_boy_a"
-    title = "GameBoy Header"
+    title = "Game Boy Header"
     developer = "Nintendo"
-    description = "GameBoy Header"
+    description = "Game Boy Header"
 
     class RomSize(Enum):
         ROM_256kbit  = 0
@@ -84,7 +84,7 @@ class GameBoy(yapsy.IPlugin.IPlugin):
 
     @staticmethod
     def read_header(path):
-        """Read a GameBoy ROM header."""
+        """Read a Game Boy ROM header."""
         header_size = GameBoy.gb_header_reader.struct.size
         with open(path, "rb") as rom:
             rom.seek(0x100)
