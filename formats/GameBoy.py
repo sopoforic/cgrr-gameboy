@@ -104,6 +104,20 @@ class GameBoy(yapsy.IPlugin.IPlugin):
     HEADER_SIZE = gb_header_reader.struct.size
 
     @staticmethod
+    def identify(path):
+        """Verify that the file given in path is a supported ROM."""
+        calculated_checksum = 0
+        actual_checksum = None
+        with open(path, "rb") as rom:
+            rom.seek(0x134)
+            data = rom.read(25)
+            calculated_checksum = (calculated_checksum - sum(data) - 25) & 255
+            actual_checksum = rom.read(1)[0]
+        if calculated_checksum != actual_checksum:
+            False
+        return True # TODO: return the decoder instead? return the decoded rom?
+
+    @staticmethod
     def calculate_header_checksum(header):
         data = GameBoy.generate_header(header)
         checksum = (0 - sum([data[i] for i in range(0x34, 0x4d)]) - 25) & 255
