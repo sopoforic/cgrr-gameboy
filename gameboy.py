@@ -16,10 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with CGRR.  If not, see <http://www.gnu.org/licenses/>.
 """Parses Game Boy ROM headers."""
-import os
 from enum import Enum
 
-from cgrr import File, FileReader
+from cgrr import FileReader
 
 key = "game_boy_a"
 title = "Game Boy Header"
