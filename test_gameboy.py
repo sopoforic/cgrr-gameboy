@@ -22,9 +22,9 @@ class Test_game_boy_a(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        import GameBoy
+        import gameboy
 
-        cls.gameboy = GameBoy
+        cls.gameboy = gameboy
 
     def test_roundtrip(self):
         mock = (b'\x00\xC3\x50\x01\x48\x65\x72\x65\x20\x77\x6F\x75\x6C\x64\x20'
