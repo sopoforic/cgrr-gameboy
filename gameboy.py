@@ -17,7 +17,6 @@
 # along with CGRR.  If not, see <http://www.gnu.org/licenses/>.
 """Parses Game Boy ROM headers."""
 import os
-from collections import namedtuple
 from enum import Enum
 
 from cgrr import File, FileReader
