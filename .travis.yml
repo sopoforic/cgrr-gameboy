@@ -6,5 +6,7 @@ python:
   - "3.3"
   - "3.4"
   - "nightly"
+install:
+  - python -c "import pip; import sys; if sys.version_info[0] < 3.4: pip.main(['install', 'enum'])"
 cache: pip
 script: nosetests
