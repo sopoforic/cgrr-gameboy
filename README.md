@@ -47,6 +47,11 @@ Requirements
 * `pip install -r requirements.txt`
 * If you're using python < 3.4, also do `pip install enum`
 
+More information
+================
+
+The Game Boy ROM header format is described in some detail on [the wiki][1].
+
 License
 =======
 
@@ -55,3 +60,5 @@ details.
 
 [![Build Status](https://travis-ci.org/sopoforic/cgrr-gameboy.svg?branch=master)](https://travis-ci.org/sopoforic/cgrr-gameboy)
 [![Code Health](https://landscape.io/github/sopoforic/cgrr-gameboy/master/landscape.svg?style=flat)](https://landscape.io/github/sopoforic/cgrr-gameboy/master)
+
+[1]: https://github.com/sopoforic/cgrr-gameboy/wiki
