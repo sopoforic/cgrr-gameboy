@@ -22,12 +22,9 @@ class Test_game_boy_a(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        from yapsy.PluginManager import PluginManager
+        import GameBoy
 
-        manager = PluginManager()
-        manager.setPluginPlaces(["formats"])
-        manager.collectPlugins()
-        cls.plugin = manager.getPluginByName("Game Boy Header").plugin_object
+        cls.gameboy = GameBoy
 
     def test_roundtrip(self):
         mock = (b'\x00\xC3\x50\x01\x48\x65\x72\x65\x20\x77\x6F\x75\x6C\x64\x20'
@@ -36,6 +33,6 @@ class Test_game_boy_a(unittest.TestCase):
                 b'\x44\x65\x6C\x65\x74\x65\x21\x54\x45\x53\x54\x20\x52\x4F\x4D'
                 b'\x20\x54\x49\x54\x4C\x45\x00\x00\x54\x50\x00\x00\x03\x00\x01'
                 b'\x33\x00\x1C\x43\x53')
-        header = self.plugin.parse_header(mock)
-        generated = self.plugin.generate_header(header)
+        header = self.gameboy.parse_header(mock)
+        generated = self.gameboy.generate_header(header)
         self.assertEqual(generated, mock)
