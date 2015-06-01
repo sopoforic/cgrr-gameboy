@@ -79,9 +79,9 @@ gb_header_reader = FileReader(
         # the few GB games with a 0x80 at offset 0x143. It conveniently also
         # works on Sachen's 4-in-1 games, which have a nonstandard format.
         "title" : (lambda s: s.decode('cp437').rstrip('\x00')),
-        "rom_size" : (lambda b: RomSize(b)),
-        "ram_size" : (lambda b: RamSize(b)),
-        "destination_code" : (lambda b: DestinationCode(b)),
+        "rom_size" : RomSize,
+        "ram_size" : RamSize,
+        "destination_code" : DestinationCode,
     },
     massage_out = {
         "title" : (lambda s: s[:16].upper().ljust(16, '\x00').encode('cp437')),
@@ -104,7 +104,7 @@ def identify(path):
         calculated_checksum = (calculated_checksum - sum(data) - 25) & 255
         actual_checksum = rom.read(1)[0]
     if calculated_checksum != actual_checksum:
-        False
+        return False
     return True # TODO: return the decoder instead? return the decoded rom?
 
 def calculate_header_checksum(header):
