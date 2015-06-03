@@ -105,7 +105,7 @@ def identify(path):
         actual_checksum = rom.read(1)[0]
     if calculated_checksum != actual_checksum:
         return False
-    return True # TODO: return the decoder instead? return the decoded rom?
+    return True
 
 def calculate_header_checksum(header):
     data = generate_header(header)
