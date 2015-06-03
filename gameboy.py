@@ -26,14 +26,14 @@ developer = "Nintendo"
 description = "Game Boy Header"
 
 class RomSize(Enum):
-    ROM_32kbyte  = 0
-    ROM_64kbyte  = 1
-    ROM_128kbyte = 2
-    ROM_256kbyte = 3
-    ROM_512kbyte = 4
-    ROM_1mbyte   = 5
-    ROM_2mbyte   = 6
-    ROM_4mbyte   = 7
+    ROM_32kbyte  = 0x00
+    ROM_64kbyte  = 0x01
+    ROM_128kbyte = 0x02
+    ROM_256kbyte = 0x03
+    ROM_512kbyte = 0x04
+    ROM_1mbyte   = 0x05
+    ROM_2mbyte   = 0x06
+    ROM_4mbyte   = 0x07
     ROM_1_1mbyte = 0x52
     ROM_1_2mbyte = 0x53
     ROM_1_5mbyte = 0x54
