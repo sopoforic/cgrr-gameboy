@@ -45,7 +45,7 @@ Requirements
 ============
 
 * `pip install -r requirements.txt`
-* If you're using python < 3.4, also do `pip install enum`
+* If you're using python < 3.4, also do `pip install enum34`
 
 More information
 ================
